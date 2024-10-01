@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { Hono } from "hono";
+import { use } from "hono/jsx";
 import { verify } from "hono/jwt";
 
 export const blogRouter = new Hono<{
@@ -67,6 +68,16 @@ blogRouter.put("/", async (c) => {
 	return c.text("updated post");
 });
 
+blogRouter.get("/bulk", async (c) => {
+	const prisma = new PrismaClient({
+		datasourceUrl: c.env?.DATABASE_URL,
+	}).$extends(withAccelerate());
+
+	const posts = await prisma.post.findMany();
+
+	return c.json({ posts });
+});
+
 blogRouter.get("/:id", async (c) => {
 	const id = c.req.param("id");
 	const prisma = new PrismaClient({
@@ -80,19 +91,4 @@ blogRouter.get("/:id", async (c) => {
 	});
 
 	return c.json(post);
-});
-
-blogRouter.get("/bulk", async (c) => {
-	const userId = c.get("userId");
-	const prisma = new PrismaClient({
-		datasourceUrl: c.env?.DATABASE_URL,
-	}).$extends(withAccelerate());
-
-	const user = await prisma.user.findUnique({
-		where: {
-			id: userId,
-		},
-	});
-
-	return c.json({ user });
 });
