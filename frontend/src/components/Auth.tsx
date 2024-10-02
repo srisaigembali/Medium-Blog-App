@@ -1,32 +1,49 @@
-import { Link } from "react-router-dom";
 import { InputBox } from "./InputBox";
 import { useState } from "react";
 import { Button } from "./Button";
+import { Header } from "./Header";
+import axios from "axios";
+import { BACKEND_URL } from "../config";
+import { useNavigate } from "react-router-dom";
 
 export const Auth = ({ type }: { type: "signup" | "signin" }) => {
 	const [postInputs, setPostInputs] = useState({
 		name: "",
-		username: "",
+		email: "",
 		password: "",
 	});
+
+	const navigate = useNavigate();
+
+	const sendRequest = async () => {
+		try {
+			const response = await axios.post(`${BACKEND_URL}/api/v1/user/${type}`, postInputs);
+			const token = response.data;
+			localStorage.setItem("token", token.jwt);
+			navigate("/blogs");
+		} catch (error) {}
+	};
 
 	return (
 		<div className='h-screen flex justify-center flex-col'>
 			<div className='flex justify-center'>
 				<div>
 					<div className='px-10'>
-						<div className='text-3xl font-bold mb-1'>
-							{type === "signup" ? "Create an account" : "Log into account"}
-						</div>
-						<div className='text-slate-500 mb-6 text-center'>
-							{type === "signup" ? "Already have an account?" : "Don't have an account?"}
-							<Link
-								to={type === "signup" ? "/signin" : "/signup"}
-								className='underline pl-2'
-							>
-								{type === "signup" ? "Login" : "signup"}
-							</Link>
-						</div>
+						{type === "signup" ? (
+							<Header
+								heading='Create an account'
+								subheading='Already have an account?'
+								to='/signin'
+								linkText='Login'
+							/>
+						) : (
+							<Header
+								heading='Log into account'
+								subheading="Don't have an account?"
+								to='/signup'
+								linkText='Signup'
+							/>
+						)}
 					</div>
 					<div>
 						<InputBox
@@ -45,7 +62,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
 							onChange={(e) => {
 								setPostInputs({
 									...postInputs,
-									username: e.target.value,
+									email: e.target.value,
 								});
 							}}
 						/>
@@ -62,7 +79,10 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
 						/>
 					</div>
 					<div>
-						<Button btnTxt={type === "signup" ? "Sign Up" : "Sign In"} />
+						<Button
+							btnTxt={type === "signup" ? "Sign Up" : "Sign In"}
+							onclick={sendRequest}
+						/>
 					</div>
 				</div>
 			</div>
