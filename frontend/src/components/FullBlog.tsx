@@ -1,4 +1,3 @@
-import { AppBar } from "./AppBar";
 import { Avatar } from "./Avatar";
 
 interface blogProps {
@@ -10,7 +9,6 @@ interface blogProps {
 export const FullBlog = ({ title, content, authorName }: blogProps) => {
 	return (
 		<div>
-			<AppBar />
 			<div className='flex justify-center'>
 				<div className='grid grid-cols-12 px-10 w-full mt-6 max-w-screen-xl'>
 					<div className='col-span-8'>
@@ -18,7 +16,7 @@ export const FullBlog = ({ title, content, authorName }: blogProps) => {
 						<div className='text-slate-500 pt-3'>Posted on 6th December 2026</div>
 						<div className='pt-4'>{content}</div>
 					</div>
-					<div className='col-span-4'>
+					<div className='col-span-4 ml-6'>
 						<div className='text-slate-600 text-lg'>Author</div>
 						<div className='flex w-full'>
 							<div className='flex justify-center flex-col p-2'>

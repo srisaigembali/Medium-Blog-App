@@ -14,7 +14,10 @@ export const BlogCard = ({ authorName, title, content, publishedDate, id }: blog
 		<Link to={`/blog/${id}`}>
 			<div className='border-b-2 border-slate-200 pb-4 p-4 max-w-screen-md'>
 				<div className='flex'>
-					<Avatar name={authorName} />
+					<Avatar
+						name={authorName}
+						size={6}
+					/>
 					<div className='pl-2 text-xs flex justify-center flex-col'>{authorName}</div>
 					<div className='pl-2 text-xs text-slate-500 flex justify-center flex-col'>&#9679;</div>
 					<div className='pl-2 text-xs text-slate-500 flex justify-center flex-col'>
