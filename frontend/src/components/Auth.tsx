@@ -6,6 +6,8 @@ import axios from "axios";
 import { BACKEND_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { useSetRecoilState } from "recoil";
+import { authState } from "../atoms/AuthState";
 
 export const Auth = ({ type }: { type: "signup" | "signin" }) => {
 	const [postInputs, setPostInputs] = useState({
@@ -15,14 +17,16 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
 	});
 
 	const navigate = useNavigate();
+	const setAuth = useSetRecoilState(authState);
 
 	const sendRequest = async () => {
 		try {
 			const response = await axios.post(`${BACKEND_URL}/api/v1/user/${type}`, postInputs);
 			if (response.status === 200) toast.success(response.data.message);
 			else toast.error(response.data.message);
-			const token = response.data;
-			localStorage.setItem("token", token.jwt);
+			const token = response.data.jwt;
+			localStorage.setItem("token", token);
+			setAuth(token);
 			navigate("/blogs");
 		} catch (error) {
 			toast.error("Error while signing up");
