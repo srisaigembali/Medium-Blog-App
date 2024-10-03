@@ -1,11 +1,22 @@
 import { Link } from "react-router-dom";
 import { Avatar } from "./Avatar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMedium } from "@fortawesome/free-brands-svg-icons/faMedium";
 
 export const AppBar = () => {
 	return (
 		<div className='border-b flex justify-between px-10 py-4'>
 			<div className='flex flex-col justify-center'>
-				<Link to={"/blogs"}>Medium</Link>
+				<Link
+					to={"/blogs"}
+					className='flex'
+				>
+					<FontAwesomeIcon
+						icon={faMedium}
+						className='h-8'
+					/>
+					<p className='flex flex-col justify-center ml-4 text-lg font-medium'>Medium</p>
+				</Link>
 			</div>
 			<div>
 				<Link to={"/publish"}>
