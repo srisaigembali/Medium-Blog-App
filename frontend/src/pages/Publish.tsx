@@ -3,6 +3,7 @@ import { AppBar } from "../components/AppBar";
 import { BACKEND_URL } from "../config";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export const Publish = () => {
 	const [title, setTitle] = useState("");
@@ -19,6 +20,8 @@ export const Publish = () => {
 				},
 			}
 		);
+		if (response.status === 200) toast.success(response.data.message);
+		else toast.error(response.data.message);
 		navigate(`/blog/${response.data.id}`);
 	};
 
