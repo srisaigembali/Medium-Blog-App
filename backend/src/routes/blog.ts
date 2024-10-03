@@ -55,6 +55,7 @@ blogRouter.post("/", async (c) => {
 		},
 	});
 	return c.json({
+		message: "Blog published successfully",
 		id: post.id,
 	});
 });
@@ -84,7 +85,7 @@ blogRouter.put("/", async (c) => {
 		},
 	});
 
-	return c.text("updated post");
+	return c.json({ message: "Blog published successfully" });
 });
 
 blogRouter.get("/bulk", async (c) => {
